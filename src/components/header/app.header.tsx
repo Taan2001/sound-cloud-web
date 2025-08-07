@@ -18,6 +18,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import Link from "next/link";
 
 // styled components
 const Search = styled("div")(({ theme }) => ({
@@ -102,8 +103,18 @@ export default function AppHeader() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem>
+        <Link
+          href={"/profile"}
+          style={{
+            textDecoration: "none",
+            color: "unset",
+          }}
+        >
+          Profile
+        </Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
     </Menu>
   );
 
@@ -188,11 +199,16 @@ export default function AppHeader() {
                 gap: "16px",
                 alignItems: "center",
                 cursor: "pointer",
+
+                "> a": {
+                  color: "unset",
+                  textDecoration: "none",
+                },
               }}
             >
-              <span>Playlist</span>
-              <span>Like</span>
-              <span>Upload</span>
+              <Link href={"/playlist"}>Playlist</Link>
+              <Link href={"/like"}>Like</Link>
+              <Link href={"/upload"}>Upload</Link>
               <Avatar onClick={handleProfileMenuOpen}>NT</Avatar>
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
