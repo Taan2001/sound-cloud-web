@@ -5,6 +5,7 @@ import Slider, { Settings } from "react-slick";
 import { Box, Button, Divider } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import Link from "next/link";
 
 interface IMainSliderProps {
   title: string;
@@ -74,6 +75,10 @@ export default function MainSlider({ data, title }: IMainSliderProps) {
             height: 150,
             width: 150,
           },
+          a: {
+            textDecoration: "none",
+            color: "inherit",
+          },
         },
       }}
     >
@@ -85,7 +90,9 @@ export default function MainSlider({ data, title }: IMainSliderProps) {
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
               alt={track.title}
             />
-            <h4>{track.title}</h4>
+            <Link href={`/track/${track._id}/?audio=${track.trackUrl}`}>
+              <h4>{track.title}</h4>
+            </Link>
             <p>{track.description}</p>
           </div>
         ))}
