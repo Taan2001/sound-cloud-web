@@ -19,6 +19,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // styled components
 const Search = styled("div")(({ theme }) => ({
@@ -62,6 +63,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+  const router = useRouter();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -84,6 +87,10 @@ export default function AppHeader() {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleRedirectHome = () => {
+    router.push("/");
   };
 
   const menuId = "primary-search-account-menu";
@@ -179,7 +186,11 @@ export default function AppHeader() {
               variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
+              sx={{
+                display: { xs: "none", sm: "block" },
+                cursor: "pointer",
+              }}
+              onClick={() => handleRedirectHome()}
             >
               Sound Cloud
             </Typography>
