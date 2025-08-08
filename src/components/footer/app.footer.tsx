@@ -7,7 +7,11 @@ import "react-h5-audio-player/lib/styles.css";
 export default function AppFooter() {
   const hasMounted = useHasMounted();
 
-  if (!hasMounted) return <></>;
+  if (!hasMounted) {
+    return <></>;
+  }
+
+  console.log("check", process.env.NEXT_PUBLIC_BACKEND_URL);
 
   return (
     <AppBar
@@ -21,7 +25,7 @@ export default function AppFooter() {
     >
       <Container sx={{ display: "flex", gap: 8 }}>
         <AudioPlayer
-          src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
           volume={0.5}
           style={{
             boxShadow: "unset",
