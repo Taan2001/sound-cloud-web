@@ -3,6 +3,8 @@ import { useWavesurfer } from "@/utils/customHooks";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useMemo, useCallback, useState } from "react";
 import { WaveSurferOptions } from "wavesurfer.js";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 
 import "./wave.scss";
 
@@ -93,14 +95,104 @@ export default function WaveTrack() {
   };
 
   return (
-    <div>
-      <div ref={containerRef} style={{ width: "100%" }} className="wave-form-container">
-        <h2>Wave Track Component</h2>
-        <div className="time">{time}</div>
-        <div className="duration">{duration}</div>
-        <div ref={hoverRef} className="hover-wave"></div>
+    <div style={{ marginTop: 20 }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 15,
+          padding: 20,
+          height: 400,
+          background: "linear-gradient(135deg, rgba(106, 112, 67) 0%, rgb(11, 15, 20) 100%)",
+        }}
+      >
+        <div
+          className="left"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            width: "75%",
+            height: "calc(100% - 10px)",
+          }}
+        >
+          <div className="info" style={{ display: "flex" }}>
+            <div>
+              <div
+                onClick={() => onPlayClick()}
+                style={{
+                  borderRadius: "50%",
+                  background: "#f50",
+                  height: "50px",
+                  width: "50px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+              >
+                {isPlaying ? <PauseIcon sx={{ fontSize: 30, color: "white" }} /> : <PlayArrowIcon sx={{ fontSize: 30, color: "white" }} />}
+              </div>
+            </div>
+            <div style={{ marginLeft: 20 }}>
+              <div
+                style={{
+                  padding: "0 5px",
+                  background: "#333",
+                  fontSize: 30,
+                  width: "fit-content",
+                  color: "white",
+                }}
+              >
+                Hỏi Dân IT's Song
+              </div>
+              <div
+                style={{
+                  padding: "0 5px",
+                  background: "#333",
+                  fontSize: 30,
+                  width: "fit-content",
+                  color: "white",
+                }}
+              >
+                Eric
+              </div>
+            </div>
+          </div>
+          <div>
+            <div ref={containerRef} style={{ width: "100%" }} className="wave-form-container">
+              <div className="time">{time}</div>
+              <div className="duration">{duration}</div>
+              <div ref={hoverRef} className="hover-wave"></div>
+              <div
+                style={{
+                  position: "absolute",
+                  height: "35px",
+                  width: "100%",
+                  bottom: 0,
+                  backdropFilter: "brightness(0.3)",
+                }}
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="right"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            width: "25%",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              aspectRatio: 1 / 1,
+              background: "#ccc",
+            }}
+          ></div>
+        </div>
       </div>
-      <button onClick={() => onPlayClick()}>{isPlaying ? "Pause" : "Play"}</button>
     </div>
   );
 }
