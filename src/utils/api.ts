@@ -1,15 +1,7 @@
 import queryString from "query-string";
 
 export const sendRequest = async <T>(props: IRequest) => {
-  let {
-    url,
-    method,
-    body,
-    queryParams = {},
-    useCredentials = false,
-    headers = {},
-    nextOption = {},
-  } = props;
+  let { url, method, body, queryParams = {}, useCredentials = false, headers = {}, nextOption = {} } = props;
 
   const options: any = {
     method: method,

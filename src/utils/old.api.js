@@ -1,15 +1,7 @@
 import queryString from "query-string";
 
 export const sendRequestJS = async (props) => {
-  let {
-    url,
-    method,
-    body,
-    queryParams = {},
-    useCredentials = false,
-    headers = {},
-    nextOptions = {},
-  } = props;
+  let { url, method, body, queryParams = {}, useCredentials = false, headers = {}, nextOptions = {} } = props;
 
   const options = {
     method: method,

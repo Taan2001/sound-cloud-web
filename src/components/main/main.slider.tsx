@@ -86,10 +86,7 @@ export default function MainSlider({ data, title }: IMainSliderProps) {
       <Slider {...settings}>
         {data.map((track) => (
           <div key={track._id} className="track">
-            <img
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
-              alt={track.title}
-            />
+            <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`} alt={track.title} />
             <Link href={`/track/${track._id}/?audio=${track.trackUrl}`}>
               <h4>{track.title}</h4>
             </Link>
