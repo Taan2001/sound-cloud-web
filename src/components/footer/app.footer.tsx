@@ -11,8 +11,6 @@ export default function AppFooter() {
     return <></>;
   }
 
-  console.log("check", process.env.NEXT_PUBLIC_BACKEND_URL);
-
   return (
     <AppBar
       position="fixed"
