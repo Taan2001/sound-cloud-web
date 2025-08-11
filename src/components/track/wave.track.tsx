@@ -7,6 +7,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 
 import "./wave.scss";
+import { Tooltip } from "@mui/material";
 
 export default function WaveTrack() {
   const audioParams = useSearchParams();
@@ -210,18 +211,24 @@ export default function WaveTrack() {
               >
                 {arrComments.map((item) => {
                   return (
-                    <img
-                      key={item.id}
-                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
-                      style={{
-                        position: "absolute",
-                        zIndex: "20",
-                        top: "67px",
-                        left: calLeft(item.moment),
-                        height: "20px",
-                        width: "20px",
-                      }}
-                    />
+                    <Tooltip title={item.content} arrow>
+                      <img
+                        key={item.id}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
+                        style={{
+                          position: "absolute",
+                          zIndex: "20",
+                          top: "67px",
+                          left: calLeft(item.moment),
+                          height: "20px",
+                          width: "20px",
+                        }}
+                        onPointerMove={(e) => {
+                          const hover = hoverRef.current!;
+                          hover.style.width = calLeft(item.moment);
+                        }}
+                      />
+                    </Tooltip>
                   );
                 })}
               </div>
