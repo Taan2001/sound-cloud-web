@@ -94,6 +94,36 @@ export default function WaveTrack() {
     return `${minutes}:${paddedSeconds}`;
   };
 
+  const calLeft = (moment: number) => {
+    const hardCodeDuration = 199;
+    const percent = (moment / hardCodeDuration) * 100;
+    return `${percent}%`;
+  };
+
+  const arrComments = [
+    {
+      id: 1,
+      avatar: "http://localhost:8000/images/chill1.png",
+      moment: 10,
+      user: "username 1",
+      content: "just a comment1",
+    },
+    {
+      id: 2,
+      avatar: "http://localhost:8000/images/chill1.png",
+      moment: 30,
+      user: "username 2",
+      content: "just a comment3",
+    },
+    {
+      id: 3,
+      avatar: "http://localhost:8000/images/chill1.png",
+      moment: 50,
+      user: "username 3",
+      content: "just a comment3",
+    },
+  ];
+
   return (
     <div style={{ marginTop: 20 }}>
       <div
@@ -172,6 +202,29 @@ export default function WaveTrack() {
                   backdropFilter: "brightness(0.3)",
                 }}
               ></div>
+              <div
+                className="comments"
+                style={{
+                  position: "relative",
+                }}
+              >
+                {arrComments.map((item) => {
+                  return (
+                    <img
+                      key={item.id}
+                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
+                      style={{
+                        position: "absolute",
+                        zIndex: "20",
+                        top: "67px",
+                        left: calLeft(item.moment),
+                        height: "20px",
+                        width: "20px",
+                      }}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
