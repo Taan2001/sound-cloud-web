@@ -20,7 +20,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 // styled components
 const Search = styled("div")(({ theme }) => ({
@@ -65,6 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AppHeader() {
   const { data: session } = useSession();
+  console.log(">>> check session", session);
 
   const router = useRouter();
 
@@ -123,7 +124,14 @@ export default function AppHeader() {
           Profile
         </Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          signOut();
+        }}
+      >
+        Logout
+      </MenuItem>
     </Menu>
   );
 
@@ -220,7 +228,9 @@ export default function AppHeader() {
                   <Avatar onClick={handleProfileMenuOpen}>NT</Avatar>
                 </>
               ) : (
-                <Link href={"/api/auth/signin"}>Login</Link>
+                <Link href={"/#"} onClick={() => signIn()}>
+                  Login
+                </Link>
               )}
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
