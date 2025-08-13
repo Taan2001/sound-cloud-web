@@ -222,7 +222,7 @@ export default function AppHeader() {
                 <>
                   <Link href={"/playlist"}>Playlist</Link>
                   <Link href={"/like"}>Like</Link>
-                  <Link href={"/upload"}>Upload</Link>
+                  <Link href={"/track/upload"}>Upload</Link>
                   <Avatar onClick={handleProfileMenuOpen}>NT</Avatar>
                 </>
               ) : (
