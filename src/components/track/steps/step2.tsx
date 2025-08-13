@@ -1,7 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
-import { FileWithPath, useDropzone } from "react-dropzone";
-
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -16,6 +14,7 @@ import "./theme.css";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
+import { useToast } from "@/utils/toast";
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -53,6 +52,8 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 function InputFileUpload({ info, setInfo }: { info: INewTrack; setInfo: (value: INewTrack) => void }) {
+  const toast = useToast();
+
   const { data: session } = useSession();
 
   const handleUpload = async (image: File) => {
@@ -72,7 +73,7 @@ function InputFileUpload({ info, setInfo }: { info: INewTrack; setInfo: (value: 
       });
     } catch (error) {
       // @ts-ignore
-      alert(error?.response?.data);
+      toast.error(error?.response?.data);
     }
   };
   return (
@@ -97,6 +98,7 @@ function InputFileUpload({ info, setInfo }: { info: INewTrack; setInfo: (value: 
 }
 
 interface IStep2Props {
+  setValue: React.Dispatch<React.SetStateAction<number>>;
   trackUpload: {
     filename: string;
     percent: number;
@@ -112,8 +114,10 @@ interface INewTrack {
   category: string;
 }
 
-const Step2 = ({ trackUpload }: IStep2Props) => {
+const Step2 = ({ setValue, trackUpload }: IStep2Props) => {
   const { data: session } = useSession();
+
+  const toast = useToast();
 
   const [info, setInfo] = useState<INewTrack>({
     title: "",
@@ -161,16 +165,17 @@ const Step2 = ({ trackUpload }: IStep2Props) => {
     });
 
     if (res.data) {
-      alert("create success");
+      toast.success("create success");
+      setValue(0);
     } else {
-      alert(res.message);
+      toast.error(res.message);
     }
   };
   return (
     <div>
       <div>
         <div>{trackUpload.filename}</div>
-        <LinearWithValueLabel trackUpload={trackUpload} />
+        <LinearWithValueLabel setValue={setValue} trackUpload={trackUpload} />
       </div>
       <Grid container spacing={2} mt={5}>
         <Grid

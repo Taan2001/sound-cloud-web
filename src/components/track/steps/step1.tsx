@@ -44,7 +44,7 @@ interface TrackUpload {
   uploadedTrackName: string;
 }
 interface IStep1Props {
-  setValue: (value: number) => void;
+  setValue: React.Dispatch<React.SetStateAction<number>>;
   setTrackUpload: React.Dispatch<
     React.SetStateAction<{
       filename: string;
@@ -72,7 +72,6 @@ const Step1 = ({ setValue, trackUpload, setTrackUpload }: IStep1Props) => {
             headers: {
               Authorization: `Bearer ${session?.access_token}`,
               target_type: "tracks",
-              delay: 5000,
             },
             onUploadProgress: (progressEvent) => {
               let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total!);
