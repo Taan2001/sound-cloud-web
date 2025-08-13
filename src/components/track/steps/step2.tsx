@@ -29,22 +29,10 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   );
 }
 
-function LinearWithValueLabel() {
-  const [progress, setProgress] = useState(10);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-    }, 800);
-
-    return () => {
-      clearInterval(timer);
-    };
-  });
-
+function LinearWithValueLabel({ trackUpload }: IStep2Props) {
   return (
     <Box sx={{ width: "100%" }}>
-      <LinearProgressWithLabel value={progress} />
+      <LinearProgressWithLabel value={trackUpload.percent} />
     </Box>
   );
 }
@@ -70,7 +58,14 @@ function InputFileUpload() {
   );
 }
 
-const Step2 = () => {
+interface IStep2Props {
+  trackUpload: {
+    filename: string;
+    percent: number;
+  };
+}
+
+const Step2 = ({ trackUpload }: IStep2Props) => {
   const categories = [
     {
       value: "CHILL",
@@ -89,8 +84,8 @@ const Step2 = () => {
   return (
     <div>
       <div>
-        <div>Your Uploading track:</div>
-        <LinearWithValueLabel />
+        <div>{trackUpload.filename}</div>
+        <LinearWithValueLabel trackUpload={trackUpload} />
       </div>
       <Grid container spacing={2} mt={5}>
         <Grid
