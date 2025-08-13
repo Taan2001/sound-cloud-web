@@ -13,6 +13,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 
 import "./theme.css";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import { sendRequest } from "@/utils/api";
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -49,9 +52,44 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-function InputFileUpload() {
+function InputFileUpload({ info, setInfo }: { info: INewTrack; setInfo: (value: INewTrack) => void }) {
+  const { data: session } = useSession();
+
+  const handleUpload = async (image: File) => {
+    const formData = new FormData();
+    formData.append("fileUpload", image);
+
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`, formData, {
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+          target_type: "images",
+        },
+      });
+      setInfo({
+        ...info,
+        imageUrl: res.data.data.fileName,
+      });
+    } catch (error) {
+      // @ts-ignore
+      alert(error?.response?.data);
+    }
+  };
   return (
-    <Button component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
+    <Button
+      component="label"
+      role={undefined}
+      variant="contained"
+      tabIndex={-1}
+      startIcon={<CloudUploadIcon />}
+      onChange={(e) => {
+        const event = e.target as HTMLInputElement;
+
+        if (event.files) {
+          handleUpload(event.files[0]);
+        }
+      }}
+    >
       Upload files
       <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
     </Button>
@@ -62,10 +100,35 @@ interface IStep2Props {
   trackUpload: {
     filename: string;
     percent: number;
+    uploadedTrackName: string;
   };
 }
 
+interface INewTrack {
+  title: string;
+  description: string;
+  trackUrl: string;
+  imageUrl: string;
+  category: string;
+}
+
 const Step2 = ({ trackUpload }: IStep2Props) => {
+  const { data: session } = useSession();
+
+  const [info, setInfo] = useState<INewTrack>({
+    title: "",
+    description: "",
+    trackUrl: "",
+    imageUrl: "",
+    category: "",
+  });
+
+  useEffect(() => {
+    if (trackUpload) {
+      setInfo({ ...info, trackUrl: trackUpload.uploadedTrackName });
+    }
+  }, [trackUpload]);
+
   const categories = [
     {
       value: "CHILL",
@@ -81,6 +144,28 @@ const Step2 = ({ trackUpload }: IStep2Props) => {
     },
   ];
 
+  const handleSubmitForm = async () => {
+    const res = await sendRequest<IBackendRes<ITrackTop[]>>({
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/`,
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+      method: "POST",
+      body: {
+        title: info.title,
+        description: info.description,
+        trackUrl: info.trackUrl,
+        imgUrl: info.imageUrl,
+        category: info.category,
+      },
+    });
+
+    if (res.data) {
+      alert("create success");
+    } else {
+      alert(res.message);
+    }
+  };
   return (
     <div>
       <div>
@@ -101,16 +186,51 @@ const Step2 = ({ trackUpload }: IStep2Props) => {
           }}
         >
           <div style={{ width: "80%", aspectRatio: 1 / 1, background: "#ccc" }}>
-            <div></div>
+            <div>
+              {info.imageUrl && (
+                <img
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imageUrl}`}
+                />
+              )}
+            </div>
           </div>
           <div>
-            <InputFileUpload />
+            <InputFileUpload info={info} setInfo={setInfo} />
           </div>
         </Grid>
         <Grid item xs={6} md={8}>
-          <TextField id="standard-basic" label="Title" variant="standard" fullWidth margin="dense" />
-          <TextField id="standard-basic" label="Description" variant="standard" fullWidth margin="dense" />
           <TextField
+            value={info?.title}
+            label="Title"
+            variant="standard"
+            fullWidth
+            margin="dense"
+            onChange={(event) =>
+              setInfo({
+                ...info,
+                title: event.target.value,
+              })
+            }
+          />
+          <TextField
+            value={info?.description}
+            label="Description"
+            variant="standard"
+            fullWidth
+            margin="dense"
+            onChange={(event) => {
+              setInfo({
+                ...info,
+                description: event.target.value,
+              });
+            }}
+          />
+          <TextField
+            value={info.category}
             sx={{
               mt: 3,
             }}
@@ -119,6 +239,12 @@ const Step2 = ({ trackUpload }: IStep2Props) => {
             label="Category"
             variant="standard"
             fullWidth
+            onChange={(event) => {
+              setInfo({
+                ...info,
+                category: event.target.value,
+              });
+            }}
           >
             {categories.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -132,6 +258,7 @@ const Step2 = ({ trackUpload }: IStep2Props) => {
             sx={{
               mt: 5,
             }}
+            onClick={handleSubmitForm}
           >
             Save
           </Button>

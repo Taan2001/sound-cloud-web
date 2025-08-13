@@ -38,12 +38,24 @@ function InputFileUpload() {
   );
 }
 
+interface TrackUpload {
+  filename: string;
+  percent: number;
+  uploadedTrackName: string;
+}
 interface IStep1Props {
   setValue: (value: number) => void;
-  setTrackUpload: (value: { filename: string; percent: number }) => void;
+  setTrackUpload: React.Dispatch<
+    React.SetStateAction<{
+      filename: string;
+      percent: number;
+      uploadedTrackName: string;
+    }>
+  >;
+  trackUpload: TrackUpload;
 }
 
-const Step1 = ({ setValue, setTrackUpload }: IStep1Props) => {
+const Step1 = ({ setValue, trackUpload, setTrackUpload }: IStep1Props) => {
   const { data: session } = useSession();
   const [percent, setPercent] = useState(0);
   const onDrop = useCallback(
@@ -65,13 +77,17 @@ const Step1 = ({ setValue, setTrackUpload }: IStep1Props) => {
             onUploadProgress: (progressEvent) => {
               let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total!);
               setTrackUpload({
+                ...trackUpload,
                 filename: acceptedFiles[0].name,
                 percent: percentCompleted,
               });
             },
           });
 
-          console.log(">>> check res:", res.data.data.filename);
+          setTrackUpload((prevTrackUpload: TrackUpload) => ({
+            ...prevTrackUpload,
+            uploadedTrackName: res.data.data.fileName,
+          }));
         } catch (error) {
           // @ts-ignore
           alert(error?.response?.data);
@@ -83,7 +99,7 @@ const Step1 = ({ setValue, setTrackUpload }: IStep1Props) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      audio: [".mp3", ".m4a"],
+      "audio/*": [".mp3", ".m4a"],
     },
   });
 
