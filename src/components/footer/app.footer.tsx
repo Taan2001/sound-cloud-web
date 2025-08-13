@@ -12,37 +12,48 @@ export default function AppFooter() {
   }
 
   return (
-    <AppBar
-      position="fixed"
-      color="primary"
-      sx={{
-        top: "auto",
-        bottom: 0,
-        backgroundColor: "#f2f2f2",
-      }}
-    >
-      <Container sx={{ display: "flex", gap: 8 }}>
-        <AudioPlayer
-          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
-          volume={0.5}
-          style={{
-            boxShadow: "unset",
-            backgroundColor: "#f2f2f2",
-          }}
-        />
-        <div
-          style={{
+    <div style={{ marginTop: 50 }}>
+      <AppBar
+        position="fixed"
+        color="primary"
+        sx={{
+          top: "auto",
+          bottom: 0,
+          backgroundColor: "#f2f2f2",
+        }}
+      >
+        <Container
+          sx={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-            justifyContent: "center",
-            minWidth: 100,
+            gap: 8,
+            ".rhap_main": {
+              gap: "40px",
+            },
           }}
         >
-          <div style={{ color: "#ccc" }}>Tanpn</div>
-          <div style={{ color: "#000" }}>Who am I?</div>
-        </div>
-      </Container>
-    </AppBar>
+          <AudioPlayer
+            layout="horizontal-reverse"
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
+            volume={0.5}
+            style={{
+              boxShadow: "unset",
+              backgroundColor: "#f2f2f2",
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+              justifyContent: "center",
+              minWidth: 100,
+            }}
+          >
+            <div style={{ color: "#ccc" }}>Tanpn</div>
+            <div style={{ color: "#000" }}>Who am I?</div>
+          </div>
+        </Container>
+      </AppBar>
+    </div>
   );
 }
