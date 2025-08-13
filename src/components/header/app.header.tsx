@@ -12,7 +12,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
@@ -20,7 +19,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 // styled components
 const Search = styled("div")(({ theme }) => ({
@@ -65,7 +64,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AppHeader() {
   const { data: session } = useSession();
-  console.log(">>> check session", session);
 
   const router = useRouter();
 
@@ -228,9 +226,7 @@ export default function AppHeader() {
                   <Avatar onClick={handleProfileMenuOpen}>NT</Avatar>
                 </>
               ) : (
-                <Link href={"/#"} onClick={() => signIn()}>
-                  Login
-                </Link>
+                <Link href={"/auth/signin"}>Login</Link>
               )}
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>

@@ -28,9 +28,11 @@ export const authOptions: AuthOptions = {
           body: { username: credentials?.username, password: credentials?.password },
         });
 
-        if (res && res.data) return res.data;
-
-        return null;
+        if (res && res.data) {
+          return res.data as any;
+        } else {
+          throw new Error(res?.message);
+        }
       },
     }),
     GithubProvider({
@@ -73,6 +75,9 @@ export const authOptions: AuthOptions = {
       }
       return session;
     },
+  },
+  pages: {
+    // signIn: "/auth/signin",
   },
 };
 
