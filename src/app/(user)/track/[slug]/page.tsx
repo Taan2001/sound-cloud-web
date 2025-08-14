@@ -11,10 +11,21 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     method: "GET",
   });
 
+  const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,
+    method: "POST",
+    queryParams: {
+      current: 1,
+      pageSize: 100,
+      trackId: slug,
+      sort: "-createdAt",
+    },
+  });
+
   return (
     <Container>
       <div>
-        <WaveTrack track={res.data ?? null} />
+        <WaveTrack track={res.data ?? null} comments={comments.data?.result || []} />
       </div>
     </Container>
   );

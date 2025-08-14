@@ -59,4 +59,27 @@ declare global {
     currentTrack: IShareTrack;
     setCurrentTrack: Dispatch<SetStateAction<IShareTrack>>;
   }
+
+  interface ITrackComment {
+    _id: string;
+    content: string;
+    moment: number;
+    user: {
+      _id: string;
+      email: string;
+      name: string;
+      role: string;
+      type: string;
+    };
+    track: {
+      _id: string;
+      title: string;
+      description: string;
+      trackUrl: string;
+    };
+    isDeleted: boolean;
+    __v: number;
+    createdAt: string;
+    updatedAt: string;
+  }
 }

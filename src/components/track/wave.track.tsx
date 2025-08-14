@@ -12,9 +12,10 @@ import { useTrackContext } from "@/lib/track.wrapper";
 
 interface IWaveTrackProps {
   track: ITrackTop | null;
+  comments: ITrackComment[] | [];
 }
 
-export default function WaveTrack({ track }: IWaveTrackProps) {
+export default function WaveTrack({ track, comments }: IWaveTrackProps) {
   const audioParams = useSearchParams();
   const filename = audioParams.get("audio");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -106,30 +107,6 @@ export default function WaveTrack({ track }: IWaveTrackProps) {
     const percent = (moment / hardCodeDuration) * 100;
     return `${percent}%`;
   };
-
-  const arrComments = [
-    {
-      id: 1,
-      avatar: "http://localhost:8000/images/chill1.png",
-      moment: 10,
-      user: "username 1",
-      content: "just a comment1",
-    },
-    {
-      id: 2,
-      avatar: "http://localhost:8000/images/chill1.png",
-      moment: 30,
-      user: "username 2",
-      content: "just a comment3",
-    },
-    {
-      id: 3,
-      avatar: "http://localhost:8000/images/chill1.png",
-      moment: 50,
-      user: "username 3",
-      content: "just a comment3",
-    },
-  ];
 
   useEffect(() => {
     if (wavesurfer && currentTrack.isPlaying) {
@@ -232,11 +209,11 @@ export default function WaveTrack({ track }: IWaveTrackProps) {
                   position: "relative",
                 }}
               >
-                {arrComments.map((item) => {
+                {comments?.map((item) => {
                   return (
-                    <Tooltip title={item.content} arrow key={item.id}>
+                    <Tooltip title={item.content} arrow key={item._id}>
                       <img
-                        key={item.id}
+                        key={item._id}
                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
                         style={{
                           position: "absolute",
