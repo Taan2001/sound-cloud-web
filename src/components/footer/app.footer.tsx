@@ -30,61 +30,86 @@ export default function AppFooter() {
   }
 
   return (
-    <div style={{ marginTop: 50 }}>
-      <AppBar
-        position="fixed"
-        color="primary"
-        sx={{
-          top: "auto",
-          bottom: 0,
-          backgroundColor: "#f2f2f2",
-        }}
-      >
-        <Container
-          sx={{
-            display: "flex",
-            gap: 8,
-            ".rhap_main": {
-              gap: "40px",
-            },
-          }}
-        >
-          <AudioPlayer
-            ref={playerRef}
-            layout="horizontal-reverse"
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
-            volume={0.5}
-            style={{
-              boxShadow: "unset",
+    <>
+      {currentTrack._id && (
+        <div style={{ marginTop: 50 }}>
+          <AppBar
+            position="fixed"
+            color="primary"
+            sx={{
+              top: "auto",
+              bottom: 0,
               backgroundColor: "#f2f2f2",
             }}
-            onPause={() => {
-              setCurrentTrack({
-                ...currentTrack,
-                isPlaying: false,
-              });
-            }}
-            onPlay={() => {
-              setCurrentTrack({
-                ...currentTrack,
-                isPlaying: true,
-              });
-            }}
-          />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "start",
-              justifyContent: "center",
-              minWidth: 100,
-            }}
           >
-            <div style={{ color: "#ccc" }}>{currentTrack.description}</div>
-            <div style={{ color: "#000" }}>{currentTrack.title}</div>
-          </div>
-        </Container>
-      </AppBar>
-    </div>
+            <Container
+              disableGutters
+              sx={{
+                display: "flex",
+                gap: 8,
+                ".rhap_main": {
+                  gap: "40px",
+                },
+              }}
+            >
+              <AudioPlayer
+                ref={playerRef}
+                layout="horizontal-reverse"
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
+                volume={0.5}
+                style={{
+                  boxShadow: "unset",
+                  backgroundColor: "#f2f2f2",
+                }}
+                onPause={() => {
+                  setCurrentTrack({
+                    ...currentTrack,
+                    isPlaying: false,
+                  });
+                }}
+                onPlay={() => {
+                  setCurrentTrack({
+                    ...currentTrack,
+                    isPlaying: true,
+                  });
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                  justifyContent: "center",
+                  minWidth: 100,
+                }}
+              >
+                <div
+                  style={{
+                    color: "#ccc",
+                    width: "100%",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                  }}
+                >
+                  {currentTrack.description}
+                </div>
+                <div
+                  style={{
+                    color: "#000",
+                    width: "100%",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                  }}
+                >
+                  {currentTrack.title}
+                </div>
+              </div>
+            </Container>
+          </AppBar>
+        </div>
+      )}
+    </>
   );
 }

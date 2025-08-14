@@ -9,6 +9,8 @@ import { Tooltip } from "@mui/material";
 
 import "./wave.scss";
 import { useTrackContext } from "@/lib/track.wrapper";
+import { fetchDefaultImages } from "@/utils/api";
+import CommentTrack from "./comment.track";
 
 interface IWaveTrackProps {
   track: ITrackTop | null;
@@ -214,7 +216,7 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
                     <Tooltip title={item.content} arrow key={item._id}>
                       <img
                         key={item._id}
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
+                        src={fetchDefaultImages(item.user.type)}
                         style={{
                           position: "absolute",
                           zIndex: "20",
@@ -246,12 +248,27 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
         >
           <div
             style={{
+              display: "flex",
               width: "100%",
               aspectRatio: 1 / 1,
-              background: "#ccc",
+              background: track?.imgUrl || "#ccc",
             }}
-          ></div>
+          >
+            {track?.imgUrl && (
+              <img
+                style={{
+                  width: "100%",
+                  background: "#ccc",
+                }}
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                alt=""
+              />
+            )}
+          </div>
         </div>
+      </div>
+      <div>
+        <CommentTrack comments={comments} track={track} wavesurfer={wavesurfer} />
       </div>
     </div>
   );
