@@ -1,6 +1,6 @@
 "use client";
 import { useWavesurfer } from "@/utils/customHooks";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useMemo, useCallback, useState } from "react";
 import { WaveSurferOptions } from "wavesurfer.js";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -9,7 +9,7 @@ import { Tooltip } from "@mui/material";
 
 import "./wave.scss";
 import { useTrackContext } from "@/lib/track.wrapper";
-import { fetchDefaultImages } from "@/utils/api";
+import { fetchDefaultImages, sendRequest } from "@/utils/api";
 import CommentTrack from "./comment.track";
 import LikeTrack from "./like.track";
 
@@ -19,6 +19,9 @@ interface IWaveTrackProps {
 }
 
 export default function WaveTrack({ track, comments }: IWaveTrackProps) {
+  const firstViewRef = useRef(true);
+  const router = useRouter();
+
   const audioParams = useSearchParams();
   const filename = audioParams.get("audio");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -122,6 +125,21 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
       setCurrentTrack({ ...track, isPlaying: false });
     }
   }, [track]);
+
+  const handleIncreaseView = async () => {
+    if (firstViewRef.current) {
+      await sendRequest<IBackendRes<IModelPaginate<ITrackLike>>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/increase-view`,
+        method: "POST",
+        body: {
+          track: track?._id,
+        },
+      });
+
+      router.refresh();
+      firstViewRef.current = false;
+    }
+  };
 
   return (
     <div style={{ marginTop: 20 }}>
