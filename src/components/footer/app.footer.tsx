@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTrackContext } from "@/lib/track.wrapper";
 import { useHasMounted } from "@/utils/customHooks";
 import { AppBar, Container } from "@mui/material";
@@ -13,16 +13,20 @@ export default function AppFooter() {
 
   const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
+  useEffect(() => {
+    if (currentTrack?.isPlaying === true) {
+      // @ts-ignore
+      playerRef.current?.audio?.current.play();
+    }
+
+    if (currentTrack?.isPlaying === false) {
+      // @ts-ignore
+      playerRef.current?.audio?.current.pause();
+    }
+  }, [currentTrack]);
+
   if (!hasMounted) {
     return <></>;
-  }
-  // @ts-ignore
-  if (currentTrack?.isPlaying) {
-    // @ts-ignore
-    playerRef.current?.audio?.current.play();
-  } else {
-    // @ts-ignore
-    playerRef.current?.audio?.current.pause();
   }
 
   return (

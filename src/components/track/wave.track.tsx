@@ -5,11 +5,16 @@ import { useEffect, useRef, useMemo, useCallback, useState } from "react";
 import { WaveSurferOptions } from "wavesurfer.js";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
-
-import "./wave.scss";
 import { Tooltip } from "@mui/material";
 
-export default function WaveTrack() {
+import "./wave.scss";
+import { useTrackContext } from "@/lib/track.wrapper";
+
+interface IWaveTrackProps {
+  track: ITrackTop | null;
+}
+
+export default function WaveTrack({ track }: IWaveTrackProps) {
   const audioParams = useSearchParams();
   const filename = audioParams.get("audio");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -54,6 +59,7 @@ export default function WaveTrack() {
 
   const wavesurfer = useWavesurfer(containerRef, optionMemo!);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
   useEffect(() => {
     if (!wavesurfer) return;
@@ -125,6 +131,18 @@ export default function WaveTrack() {
     },
   ];
 
+  useEffect(() => {
+    if (wavesurfer && currentTrack.isPlaying) {
+      wavesurfer.pause();
+    }
+  }, [currentTrack]);
+
+  useEffect(() => {
+    if (track?._id && !currentTrack?._id) {
+      setCurrentTrack({ ...track, isPlaying: false });
+    }
+  }, [track]);
+
   return (
     <div style={{ marginTop: 20 }}>
       <div
@@ -149,7 +167,12 @@ export default function WaveTrack() {
           <div className="info" style={{ display: "flex" }}>
             <div>
               <div
-                onClick={() => onPlayClick()}
+                onClick={() => {
+                  onPlayClick();
+                  if (track && wavesurfer) {
+                    setCurrentTrack({ ...currentTrack, isPlaying: false });
+                  }
+                }}
                 style={{
                   borderRadius: "50%",
                   background: "#f50",
@@ -174,7 +197,7 @@ export default function WaveTrack() {
                   color: "white",
                 }}
               >
-                Hỏi Dân IT's Song
+                {track?.title}
               </div>
               <div
                 style={{
@@ -185,7 +208,7 @@ export default function WaveTrack() {
                   color: "white",
                 }}
               >
-                Eric
+                {track?.description}
               </div>
             </div>
           </div>
@@ -211,7 +234,7 @@ export default function WaveTrack() {
               >
                 {arrComments.map((item) => {
                   return (
-                    <Tooltip title={item.content} arrow>
+                    <Tooltip title={item.content} arrow key={item.id}>
                       <img
                         key={item.id}
                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
