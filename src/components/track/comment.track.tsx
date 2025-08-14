@@ -1,5 +1,6 @@
 "use client";
 import { fetchDefaultImages, sendRequest } from "@/utils/api";
+import { useHasMounted } from "@/utils/customHooks";
 import { Box, Grid, TextField } from "@mui/material";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -20,7 +21,7 @@ const CommentTrack = ({ track, comments, wavesurfer }: IWaveTrackProps) => {
 
   const { data: session } = useSession();
 
-  console.log(session);
+  const hasMounted = useHasMounted();
 
   const [yourComment, setYourComment] = useState<string>("");
 
@@ -60,7 +61,7 @@ const CommentTrack = ({ track, comments, wavesurfer }: IWaveTrackProps) => {
   };
 
   return (
-    <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+    <div>
       {session?.user && (
         <TextField
           label="Comments"
@@ -106,7 +107,7 @@ const CommentTrack = ({ track, comments, wavesurfer }: IWaveTrackProps) => {
                       color: "#999",
                     }}
                   >
-                    {dayjs(comment.createdAt).fromNow()}
+                    {hasMounted && dayjs(comment.createdAt).fromNow()}
                   </div>
                 </Box>
               );

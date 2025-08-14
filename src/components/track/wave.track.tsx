@@ -11,6 +11,7 @@ import "./wave.scss";
 import { useTrackContext } from "@/lib/track.wrapper";
 import { fetchDefaultImages } from "@/utils/api";
 import CommentTrack from "./comment.track";
+import LikeTrack from "./like.track";
 
 interface IWaveTrackProps {
   track: ITrackTop | null;
@@ -267,7 +268,10 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
           </div>
         </div>
       </div>
-      <div>
+      <div style={{ margin: "10px 0px" }}>
+        <LikeTrack track={track} />
+      </div>
+      <div style={{ margin: "5px 0px" }}>
         <CommentTrack comments={comments} track={track} wavesurfer={wavesurfer} />
       </div>
     </div>

@@ -9,7 +9,12 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
   const res = await sendRequest<IBackendRes<ITrackTop>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`,
     method: "GET",
+    nextOption: {
+      cache: "no-store",
+    },
   });
+
+  console.log(">>> check res:", res);
 
   const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,
@@ -25,7 +30,7 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
   return (
     <Container>
       <div>
-        <WaveTrack track={res.data ?? null} comments={comments.data?.result || []} />
+        <WaveTrack track={res?.data ?? null} comments={comments.data?.result || []} />
       </div>
     </Container>
   );
