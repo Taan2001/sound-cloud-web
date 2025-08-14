@@ -132,7 +132,7 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/increase-view`,
         method: "POST",
         body: {
-          track: track?._id,
+          trackId: track?._id,
         },
       });
 
@@ -167,6 +167,7 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
               <div
                 onClick={() => {
                   onPlayClick();
+                  handleIncreaseView();
                   if (track && wavesurfer) {
                     setCurrentTrack({ ...currentTrack, isPlaying: false });
                   }
