@@ -24,4 +24,9 @@ declare module "next-auth" {
     refresh_token: string;
     user: IUser;
   }
+  interface User {
+    access_token: string;
+    refresh_token: string;
+    user: IUser;
+  }
 }

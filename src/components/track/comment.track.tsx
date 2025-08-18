@@ -5,6 +5,7 @@ import { Box, Grid, TextField } from "@mui/material";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import WaveSurfer from "wavesurfer.js";
@@ -81,7 +82,7 @@ const CommentTrack = ({ track, comments, wavesurfer }: IWaveTrackProps) => {
       <div style={{ marginTop: "16px" }}>
         <Grid container spacing={2}>
           <Grid item xs={4} lg={3}>
-            <img style={{ width: "75%" }} src={fetchDefaultImages(track?.uploader.type!)} />
+            <Image src={fetchDefaultImages(track?.uploader.type!)} alt="avatar-comment" width={150} height={150} />
           </Grid>
           <Grid item xs={8} lg={9} sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {comments.map((comment) => {
@@ -89,7 +90,7 @@ const CommentTrack = ({ track, comments, wavesurfer }: IWaveTrackProps) => {
                 <Box key={comment._id} sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Box sx={{ display: "flex", gap: "20px" }}>
                     <Box sx={{ display: "flex", gap: "12px" }}>
-                      <img style={{ height: "40px", width: "40px" }} src={fetchDefaultImages(comment.user.type)} alt="" />
+                      <Image src={fetchDefaultImages(comment.user.type)} width={40} height={40} alt="comments" />
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "space-between" }}>
                       <div style={{ fontSize: "13px" }}>

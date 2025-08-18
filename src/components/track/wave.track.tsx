@@ -12,6 +12,7 @@ import { useTrackContext } from "@/lib/track.wrapper";
 import { fetchDefaultImages, sendRequest } from "@/utils/api";
 import CommentTrack from "./comment.track";
 import LikeTrack from "./like.track";
+import Image from "next/image";
 
 interface IWaveTrackProps {
   track: ITrackTop | null;
@@ -234,17 +235,18 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
                 {comments?.map((item) => {
                   return (
                     <Tooltip title={item.content} arrow key={item._id}>
-                      <img
+                      <Image
                         key={item._id}
                         src={fetchDefaultImages(item.user.type)}
+                        height={20}
+                        width={20}
                         style={{
                           position: "absolute",
                           zIndex: "20",
                           top: "67px",
                           left: calLeft(item.moment),
-                          height: "20px",
-                          width: "20px",
                         }}
+                        alt="image-track"
                         onPointerMove={(e) => {
                           const hover = hoverRef.current!;
                           hover.style.width = calLeft(item.moment);
@@ -275,13 +277,14 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
             }}
           >
             {track?.imgUrl && (
-              <img
+              <Image
                 style={{
-                  width: "100%",
                   background: "#ccc",
                 }}
+                width={250}
+                height={250}
                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
-                alt=""
+                alt="track-image"
               />
             )}
           </div>
