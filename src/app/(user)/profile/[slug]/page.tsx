@@ -8,6 +8,10 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/users?current=1&pageSize=10`,
     method: "POST",
     body: { id: params.slug },
+    nextOption: {
+      // cache: "no-store",
+      next: { tags: ["track-by-profile"] },
+    },
   });
 
   //@ts-ignore

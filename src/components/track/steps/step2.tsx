@@ -167,6 +167,14 @@ const Step2 = ({ setValue, trackUpload }: IStep2Props) => {
     if (res.data) {
       toast.success("create success");
       setValue(0);
+      await sendRequest<IBackendRes<any>>({
+        url: `/api/revalidate`,
+        method: "POST",
+        queryParams: {
+          tag: "track-by-profile",
+          secret: "justASecretForCache",
+        },
+      });
     } else {
       toast.error(res.message);
     }

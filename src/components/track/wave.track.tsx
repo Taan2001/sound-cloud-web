@@ -136,6 +136,15 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
         },
       });
 
+      await sendRequest<IBackendRes<any>>({
+        url: `/api/revalidate`,
+        method: "POST",
+        queryParams: {
+          tag: "track-by-id",
+          secret: "justASecretForCache",
+        },
+      });
+
       router.refresh();
       firstViewRef.current = false;
     }

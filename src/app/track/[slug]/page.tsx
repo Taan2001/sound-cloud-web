@@ -4,12 +4,21 @@ import Container from "@mui/material/Container";
 import { useSearchParams } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
+import next from "next";
 
 type IGenerateMetadataProps = {
   params: {
     slug: string;
   };
 };
+
+export async function generateStaticParams() {
+  return [
+    { slug: "song-cho-het-doi-thanh-xuan-6879a1d9f6f5c0792ad01173.html" },
+    { slug: "mien-man-6879a1d9f6f5c0792ad0116a.html" },
+    { slug: "truy-lung-bao-vat-6879a1d9f6f5c0792ad0116b.html" },
+  ];
+}
 
 export async function generateMetadata({ params }: IGenerateMetadataProps): Promise<Metadata> {
   // read route params
@@ -46,7 +55,8 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
     method: "GET",
     nextOption: {
-      cache: "no-store",
+      // cache: "no-store",
+      next: { tags: ["track-by-id"] },
     },
   });
 
@@ -60,6 +70,8 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
       sort: "-createdAt",
     },
   });
+
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
 
   if (!comments?.data) {
     return notFound();
