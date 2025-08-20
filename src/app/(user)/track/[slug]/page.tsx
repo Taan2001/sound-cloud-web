@@ -3,6 +3,7 @@ import { sendRequest } from "@/utils/api";
 import Container from "@mui/material/Container";
 import { useSearchParams } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 
 type IGenerateMetadataProps = {
   params: {
@@ -59,6 +60,10 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
       sort: "-createdAt",
     },
   });
+
+  if (!comments?.data) {
+    return notFound();
+  }
 
   return (
     <Container>
