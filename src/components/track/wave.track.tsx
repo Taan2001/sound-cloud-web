@@ -33,7 +33,6 @@ export default function WaveTrack({ track, comments }: IWaveTrackProps) {
   const optionMemo = useMemo((): Omit<WaveSurferOptions, "container"> | null => {
     let gradient, progressGradient;
     if (typeof document !== "undefined") {
-      console.log(">>> check document", document);
       const canvas = document.createElement("canvas")!;
       const ctx = canvas?.getContext("2d")!;
 
