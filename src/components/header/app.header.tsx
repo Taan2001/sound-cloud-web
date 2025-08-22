@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { fetchDefaultImages } from "@/utils/api";
 import Image from "next/image";
+import ActiveLink from "./active.link";
 
 // styled components
 const Search = styled("div")(({ theme }) => ({
@@ -228,14 +229,21 @@ export default function AppHeader() {
                 "> a": {
                   color: "unset",
                   textDecoration: "none",
+                  padding: "2px 8px",
+
+                  "&.active": {
+                    background: "#3b4a59",
+                    color: "#cefaff",
+                    borderRadius: "4px",
+                  },
                 },
               }}
             >
               {session ? (
                 <>
-                  <Link href={"/playlist"}>Playlist</Link>
-                  <Link href={"/like"}>Like</Link>
-                  <Link href={"/track/upload"}>Upload</Link>
+                  <ActiveLink href={"/playlist"}>Playlist</ActiveLink>
+                  <ActiveLink href={"/like"}>Like</ActiveLink>
+                  <ActiveLink href={"/track/upload"}>Upload</ActiveLink>
                   <Image src={fetchDefaultImages(session.user.type)} alt="avatar" height={35} width={35} onClick={handleProfileMenuOpen} />
                 </>
               ) : (
