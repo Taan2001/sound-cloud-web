@@ -71,7 +71,7 @@ export const fetchDefaultImages = (type: string) => {
   return "/user/default-user.png";
 };
 
-export const converSlugUrl = (str: string) => {
+export const convertSlugUrl = (str: string) => {
   if (!str) return "";
   return slugify(str, { lower: true, locale: "vi" });
 };

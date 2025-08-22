@@ -13,7 +13,7 @@ import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { ListItem } from "@mui/material";
 import { useTrackContext } from "@/lib/track.wrapper";
 import Link from "next/link";
-import { converSlugUrl } from "@/utils/api";
+import { convertSlugUrl } from "@/utils/api";
 
 interface IProfileTracksProps {
   data: ITrackTop;
@@ -27,7 +27,7 @@ const ProfileTracks = ({ data }: IProfileTracksProps) => {
     <Card sx={{ display: "flex", justifyContent: "space-between" }}>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
-          <Link href={`/track/${converSlugUrl(data.title)}-${data._id}.html?audio=${data.trackUrl}`}>
+          <Link href={`/track/${convertSlugUrl(data.title)}-${data._id}.html?audio=${data.trackUrl}`}>
             <Typography component="div" variant="h5">
               {data.title}
             </Typography>

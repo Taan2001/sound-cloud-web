@@ -92,4 +92,15 @@ declare global {
     countLike: number;
     countPlay: number;
   }
+  interface IPlaylist {
+    _id: string;
+    title: string;
+    isPublic: boolean;
+    user: string;
+    tracks: ITrackLike[];
+    isDeleted: boolean;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }
 }

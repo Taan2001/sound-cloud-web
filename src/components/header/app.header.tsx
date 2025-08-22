@@ -204,7 +204,18 @@ export default function AppHeader() {
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === "Enter") {
+                    const value = (e.target as HTMLInputElement).value;
+                    if (value) {
+                      router.push(`/search?q=${value}`);
+                    }
+                  }
+                }}
+              />
             </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box

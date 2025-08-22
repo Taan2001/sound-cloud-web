@@ -6,7 +6,7 @@ import { Box, Button, Divider } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Link from "next/link";
-import { converSlugUrl } from "@/utils/api";
+import { convertSlugUrl } from "@/utils/api";
 import Image from "next/image";
 
 interface IMainSliderProps {
@@ -89,7 +89,7 @@ export default function MainSlider({ data, title }: IMainSliderProps) {
         {data.map((track) => (
           <div key={track._id} className="track" style={{ position: "relative", width: "100%" }}>
             <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`} alt={track.title} width={150} height={150} />
-            <Link href={`/track/${converSlugUrl(track.title)}-${track._id}.html/?audio=${track.trackUrl}`}>
+            <Link href={`/track/${convertSlugUrl(track.title)}-${track._id}.html/?audio=${track.trackUrl}`}>
               <h4>{track.title}</h4>
             </Link>
             <p>{track.description}</p>
