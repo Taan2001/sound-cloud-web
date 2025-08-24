@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { sendRequest } from "@/utils/api";
+import { handleLikeTrackAction } from "@/utils/actions/actions";
 
 interface ILikeTrackProps {
   track: ITrackTop | null;
@@ -42,27 +43,9 @@ const LikeTrack = ({ track }: ILikeTrackProps) => {
   }, [session]);
 
   const handleLikeTrack = async () => {
-    await sendRequest<IBackendRes<IModelPaginate<ITrackLike>>>({
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
-      method: "POST",
-      body: {
-        track: track?._id,
-        quantity: trackLikes?.some((t) => t._id === track?._id) ? -1 : 1,
-      },
-      headers: {
-        Authorization: `Bearer ${session?.access_token}`,
-      },
-    });
-
-    await sendRequest<IBackendRes<any>>({
-      url: `/api/revalidate`,
-      method: "POST",
-      queryParams: {
-        tag: "track-by-id",
-        secret: "justASecretForCache",
-      },
-    });
-
+    const id = track?._id ?? "";
+    const quantity = trackLikes?.some((t) => t._id === track?._id) ? -1 : 1;
+    await handleLikeTrackAction(id, quantity);
     await fetchData();
     router.refresh();
   };
